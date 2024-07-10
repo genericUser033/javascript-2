@@ -19,13 +19,18 @@ const app = (() => {
             root.innerHTML = cars.map((car, index) => `
                 <li>
                     ${car}
-                    <span class="delete" data-index=$"{index}">&times</span>
+                    <span class="delete" data-index=$"{index}">&times</span> 
                 </li>
                 
-            `).join('');
+            `).join('');//data-index => dataset.index
         },
-        handleDelete() {
-            console.log('hjdjdj')
+        handleDelete(event) {
+            const deleteBtn = event.target.closest('.delete');
+            if(deleteBtn) {
+                const index =  deleteBtn.dataset.index;
+                this.delete(index);
+                this.render();
+            }
         },
         init() {
             // Handle DOM event
@@ -38,7 +43,7 @@ const app = (() => {
                 input.focus()
             }
 
-            root.onclick = this.handleDelete;
+            root.onclick = this.handleDelete.bind(this);
 
             // When an event handler is a method of an object (like handleDelete in app), JavaScript ensures that this inside the method refers to the object itself (app in this case) when the method is called as an event handler.
             // If you were to use this.handleDelete(), the function would execute immediately during the assignment, rather than waiting for a click event on root.
@@ -51,3 +56,8 @@ app.init()
 
 // Delegate pattern
 // bat duoc nhung su kien click cua element sau khi duoc them vao DOM
+//bind => return a new function with a new this, doesn't change this inside the function
+
+// newFunction = originalFunction.bind(thisValue);
+// originalFunction: The function for which you want to set the this value.
+// thisValue: The value to be passed as the this parameter when the function is called.
